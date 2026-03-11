@@ -1,0 +1,6 @@
+{
+  "_comment": "Mensajes de error utilizados en validaciones de login",
+
+  "ERROR_LOCKED_USER": "Epic sadface: Sorry, this user has been locked out.",
+  "ERROR_USERNAME_REQUIRED": "Epic sadface: Username is required"
+}
