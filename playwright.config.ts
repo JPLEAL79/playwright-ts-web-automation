@@ -14,6 +14,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
 
+  /* Directorio donde se encuentran los tests */
   testDir: './tests',
 
   /* Permite ejecutar archivos de test en paralelo */
@@ -22,29 +23,61 @@ export default defineConfig({
   /* Evita subir accidentalmente test.only a CI */
   forbidOnly: !!process.env.CI,
 
-  /* Retry solo cuando corre en CI */
-  retries: process.env.CI ? 2 : 0,
+  /**
+   * Retry de tests
+   * Si un test falla se vuelve a ejecutar una vez.
+   * Esto ayuda a reducir falsos negativos por problemas de timing o red.
+   */
+  retries: 1,
 
-  /* En CI se ejecuta secuencial para evitar saturación */
-  workers: process.env.CI ? 1 : undefined,
+ /**
+ * Control de paralelismo
+ * En CI se ejecuta 1 worker para estabilidad.
+ * En local se limitan los workers para evitar saturar la máquina.
+ */
+workers: process.env.CI ? 1 : 2,
 
-  /* Reporte HTML local */
+  /* Reporte HTML local generado por Playwright */
   reporter: 'html',
 
   use: {
 
-    /* URL base de la aplicación */
+    /**
+     * URL base de la aplicación
+     * Permite usar page.goto('/') en los tests
+     */
     baseURL: 'https://www.saucedemo.com/v1/index.html',
 
-    /* Captura trace solo cuando hay retry */
+    /**
+     * Trace de ejecución
+     * Solo se guarda cuando un test falla y se vuelve a ejecutar
+     */
     trace: 'on-first-retry',
 
-    /* Opciones útiles para debug si se necesitan más adelante */
-    // screenshot: 'only-on-failure',
-    // video: 'retain-on-failure',
+    /**
+     * Captura screenshot cuando un test falla
+     * Muy útil para análisis de errores
+     */
+    screenshot: 'only-on-failure',
+
+    /**
+     * Graba video cuando un test falla
+     * Facilita debugging en entornos CI
+     */
+    video: 'retain-on-failure',
+
+    /**
+     * Manejo automático de permisos del navegador
+     * Se puede extender si la aplicación lo requiere
+     */
+    permissions: [],
+
   },
 
-  /* Navegadores soportados por el framework */
+  /**
+   * Navegadores soportados por el framework
+   * Actualmente: Chrome y Firefox
+   */
   projects: [
 
     {
@@ -59,7 +92,10 @@ export default defineConfig({
 
   ],
 
-  /* Para levantar servidor local si fuese necesario */
+  /**
+   * Configuración opcional para levantar servidor local
+   * útil en aplicaciones frontend locales
+   */
   // webServer: {
   //   command: 'npm run start',
   //   url: 'http://localhost:3000',
