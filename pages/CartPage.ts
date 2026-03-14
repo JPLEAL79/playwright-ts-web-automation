@@ -12,9 +12,7 @@ export class CartPage {
   private checkoutButton: Locator;
 
   constructor(page: Page) {
-
     this.page = page;
-
     this.checkoutButton = page.locator('#checkout');
 
   }
@@ -23,7 +21,6 @@ export class CartPage {
    * Avanza al proceso de checkout
    */
   async clickCheckout() {
-
     await this.checkoutButton.click();
 
   }

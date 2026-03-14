@@ -15,7 +15,6 @@ export class ProductsPage {
   private backpackItem: Locator;
 
   constructor(page: Page) {
-
     this.page = page;
 
     this.productsTitle = page.locator('#header_container');
@@ -29,7 +28,6 @@ export class ProductsPage {
  * Valida que el usuario se encuentra autenticado en la aplicación
  */
   async validateUserIsLoggedIn() {
-
     await expect(this.productsTitle).toBeVisible();
 
   }
@@ -38,7 +36,6 @@ export class ProductsPage {
    * Agrega el producto Backpack al carrito
    */
   async addBackpackToCart() {
-
     await this.addBackpackButton.click();
 
   }
@@ -47,7 +44,6 @@ export class ProductsPage {
    * Navega al carrito
    */
   async goToCart() {
-
     await this.cartButton.click();
 
   }
@@ -56,7 +52,6 @@ export class ProductsPage {
    * Verifica que el producto esté en el carrito
    */
   async isBackpackInCart() {
-
     await expect(this.backpackItem).toBeVisible();
 
   }

@@ -1,7 +1,6 @@
 # Playwright TypeScript Automation Framework
 
 Automation framework built with **Playwright + TypeScript** for end-to-end testing of an e-commerce web application.
-
 The project follows clean automation practices using **Page Object Model**, reusable **fixtures**, and **externalized test data**, providing a scalable foundation for integration with CI/CD pipelines and cloud environments such as Docker and AWS.
 
 ---
@@ -42,8 +41,8 @@ playwright-ts-web
 │       └── purchase.spec.ts
 │
 ├── test-data
-│   ├── login.json
-│   └── purchase.json
+│   ├── loginData.json
+│   └── purchaseData.json
 │
 ├── utils
 │   └── dataResolver.ts
@@ -52,8 +51,7 @@ playwright-ts-web
 ├── package.json
 └── tsconfig.json
 
----
-Project Setup
+Project Setup:
 1. Create the project
 mkdir playwright-ts-web
 cd playwright-ts-web
@@ -68,12 +66,12 @@ npm init playwright@latest
 ✔ Add GitHub Actions workflow? → No
 ✔ Install Playwright browsers? → Yes
 
-3. Install dependencies
-npm install
-
 ---
 
-## Running Tests
+3. Install dependencies:
+npm install
+
+Running Tests.
 Run all tests: npx playwright test
 Run tests in headed mode: npx playwright test --headed
 Run login tests only: npx playwright test tests/login
@@ -81,23 +79,22 @@ Run purchase tests only: npx playwright test tests/purchase
 
 ---
 
-## Browser Support
-Run tests in Chromium: npx playwright test --project=chromium
-Run tests in Firefox: npx playwright test --project=firefox
-Open HTML report: npx playwright show-report
+Browser Support:
+Run tests in Chrome
+npx playwright test --project=chrome
+Run tests in Firefox
+npx playwright test --project=firefox
+Open HTML report
+npx playwright show-report
 
 ---
 
-## Test Data
-
+Test Data:
 Test data is externalized to avoid hardcoded values in tests.
+config/environments/qa/users.json → user credentials
+test-data/loginData.json → login validation messages
+test-data/purchaseData.json → purchase flow data
 
-- config/environments/qa/users.json → user credentials
-- test-data/login.json → login validation messages
-- test-data/purchase.json → purchase flow data
-
-
-## Author:
-
-Juan Pablo Leal  
+Author:
+Juan Pablo Leal
 Senior QA Automation Engineer

@@ -17,7 +17,6 @@ export class CheckoutPage {
   private confirmationMessage: Locator;
 
   constructor(page: Page) {
-
     this.page = page;
 
     this.firstNameInput = page.locator('#first-name');
@@ -33,7 +32,6 @@ export class CheckoutPage {
    * Ingresa nombre del cliente
    */
   async enterFirstName(firstName: string) {
-
     await this.firstNameInput.fill(firstName);
 
   }
@@ -42,7 +40,6 @@ export class CheckoutPage {
    * Ingresa apellido del cliente
    */
   async enterLastName(lastName: string) {
-
     await this.lastNameInput.fill(lastName);
 
   }
@@ -51,7 +48,6 @@ export class CheckoutPage {
    * Ingresa código postal
    */
   async enterPostalCode(postalCode: string) {
-
     await this.postalCodeInput.fill(postalCode);
 
   }
@@ -60,7 +56,6 @@ export class CheckoutPage {
    * Continúa el proceso de checkout
    */
   async continueCheckout() {
-
     await this.continueButton.click();
 
   }
@@ -69,7 +64,6 @@ export class CheckoutPage {
    * Finaliza la compra
    */
   async finishCheckout() {
-
     await this.finishButton.click();
 
   }
@@ -78,7 +72,6 @@ export class CheckoutPage {
    * Valida confirmación de compra
    */
   async validatePurchaseConfirmation() {
-
     await expect(this.confirmationMessage).toBeVisible();
 
   }

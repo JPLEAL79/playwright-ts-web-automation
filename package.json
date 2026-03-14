@@ -1,11 +1,21 @@
 {
-  "name": "automation",
+  "name": "playwright-ts-web-automation",
   "version": "1.0.0",
-  "description": "",
+  "description": "Web test automation framework using Playwright and TypeScript",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "e2e"
+  ],
+  "author": "Juan Pablo Leal",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {

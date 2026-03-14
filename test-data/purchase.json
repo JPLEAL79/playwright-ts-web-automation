@@ -1,8 +1,0 @@
-{
-  "_comment": "Datos utilizados en el flujo de compra",
-
-  "PRODUCT_NAME_BACKPACK": "Sauce Labs Backpack",
-  "FIRST_NAME_DEFAULT": "Juan Pablo",
-  "LAST_NAME_DEFAULT": "Leal",
-  "POSTAL_CODE_DEFAULT": "1234"
-}

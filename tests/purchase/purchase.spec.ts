@@ -1,44 +1,45 @@
 import { test } from '../../fixtures/base.fixture';
-import { resolveUser, resolvePurchaseData } from '../../utils/dataResolver';
+import { resolvePurchaseData } from '../../utils/dataResolver';
 
 /**
  * Suite de pruebas para el flujo de compra
  */
 test.describe('Purchase Flow', () => {
 
-  test('User completes purchase successfully', async ({ loginPage, productsPage, cartPage, checkoutPage }) => {
+  test('User completes purchase successfully',
+    async ({ loggedUser, productsPage, cartPage, checkoutPage }) => {
 
-    // Abrir aplicación
-    await loginPage.openApplication();
+      // Agregar producto al carrito
+      await productsPage.addBackpackToCart();
 
-    // Login usando keys lógicas
-    await loginPage.enterUsername(resolveUser('USER_OK'));
-    await loginPage.enterPassword(resolveUser('PASS_OK'));
-    await loginPage.clickLogin();
+      // Ir al carrito
+      await productsPage.goToCart();
 
-    // Agregar producto al carrito
-    await productsPage.addBackpackToCart();
+      // Iniciar checkout
+      await cartPage.clickCheckout();
 
-    // Ir al carrito
-    await productsPage.goToCart();
+      // Ingresar datos del cliente
+      await checkoutPage.enterFirstName(
+        resolvePurchaseData('FIRST_NAME')
+      );
 
-    // Iniciar checkout
-    await cartPage.clickCheckout();
+      await checkoutPage.enterLastName(
+        resolvePurchaseData('LAST_NAME')
+      );
 
-    // Datos del cliente desde test-data
-    await checkoutPage.enterFirstName(resolvePurchaseData('FIRST_NAME_DEFAULT'));
-    await checkoutPage.enterLastName(resolvePurchaseData('LAST_NAME_DEFAULT'));
-    await checkoutPage.enterPostalCode(resolvePurchaseData('POSTAL_CODE_DEFAULT'));
+      await checkoutPage.enterPostalCode(
+        resolvePurchaseData('POSTAL_CODE')
+      );
 
-    // Continuar checkout
-    await checkoutPage.continueCheckout();
+      // Continuar proceso
+      await checkoutPage.continueCheckout();
 
-    // Confirmar compra
-    await checkoutPage.finishCheckout();
+      // Finalizar compra
+      await checkoutPage.finishCheckout();
 
-    // Validar confirmación
-    await checkoutPage.validatePurchaseConfirmation();
+      // Validar confirmación
+      await checkoutPage.validatePurchaseConfirmation();
 
-  });
+    });
 
 });
