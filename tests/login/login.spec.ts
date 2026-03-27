@@ -1,61 +1,51 @@
 import { test } from '../../fixtures/base.fixture';
-import { resolveUser, resolveLoginData } from '../../utils/dataResolver';
+import { resolveLoginData, resolveUser } from '../../utils/dataResolver';
 
 /**
- * Suite de pruebas para validar el flujo de Login
+ * Test suite for the login flow.
  */
 test.describe('Authentication - Login Flow', () => {
-
   /**
-   * Hook que se ejecuta antes de cada prueba.
-   * Abre la aplicación para iniciar el flujo de login.
+   * Opens the application before each login scenario.
    */
   test.beforeEach(async ({ loginPage }) => {
     await loginPage.openApplication();
-
   });
 
   /**
-   * LOGIN POSITIVO
-   * Valida que un usuario válido pueda autenticarse correctamente.
+   * Verifies that a valid user can log in successfully.
    */
   test('Login - valid credentials', async ({ loginPage, productsPage }) => {
+    await loginPage.login(
+      resolveUser('USER_OK'),
+      resolveUser('PASS_OK')
+    );
 
-    await loginPage.enterUsername(resolveUser('USER_OK'));
-    await loginPage.enterPassword(resolveUser('PASS_OK'));
-    await loginPage.clickLogin();
     await productsPage.validateUserIsLoggedIn();
-
   });
 
   /**
-   * LOGIN NEGATIVO
-   * Valida que un usuario bloqueado no pueda autenticarse.
+   * Verifies that a locked user cannot log in.
    */
   test('Login - locked user', async ({ loginPage }) => {
+    await loginPage.login(
+      resolveUser('USER_LOCKED'),
+      resolveUser('PASS_OK')
+    );
 
-    // Ingresar usuario bloqueado
-    await loginPage.enterUsername(resolveUser('USER_LOCKED'));
-    await loginPage.enterPassword(resolveUser('PASS_OK'));
-    await loginPage.clickLogin();
     await loginPage.validateErrorMessage(
       resolveLoginData('ERROR_LOCKED_USER')
     );
-
   });
 
   /**
-   * LOGIN NEGATIVO
-   * Valida comportamiento cuando el usuario presiona login sin ingresar credenciales.
+   * Verifies the behavior when no credentials are provided.
    */
   test('Login - empty username and password', async ({ loginPage }) => {
-
-    // Ejecutar login sin ingresar datos
     await loginPage.clickLogin();
+
     await loginPage.validateErrorMessage(
       resolveLoginData('ERROR_USERNAME_REQUIRED')
     );
-
   });
-
 });
