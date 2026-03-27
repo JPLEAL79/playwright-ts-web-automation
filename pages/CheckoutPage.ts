@@ -4,8 +4,6 @@ import { expect, Locator, Page } from '@playwright/test';
  * Page object for the checkout page.
  */
 export class CheckoutPage {
-  private readonly page: Page;
-
   // Locators
   private readonly firstNameInput: Locator;
   private readonly lastNameInput: Locator;
@@ -15,8 +13,6 @@ export class CheckoutPage {
   private readonly confirmationMessage: Locator;
 
   constructor(page: Page) {
-    this.page = page;
-
     this.firstNameInput = page.locator('#first-name');
     this.lastNameInput = page.locator('#last-name');
     this.postalCodeInput = page.locator('#postal-code');

@@ -11,6 +11,7 @@
     "test:login": "playwright test tests/login",
     "test:purchase": "playwright test tests/purchase",
     "test:ui": "playwright test --ui",
+    "typecheck": "tsc --noEmit",
     "report": "playwright show-report"
   },
   "keywords": [

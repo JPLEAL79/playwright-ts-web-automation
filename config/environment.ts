@@ -1,6 +1,15 @@
+import appConfiguration from './environments/qa/app.json';
+
 const SUPPORTED_ENVIRONMENTS = ['QA'] as const;
 
 type SupportedEnvironment = (typeof SUPPORTED_ENVIRONMENTS)[number];
+type EnvironmentConfig = {
+  baseUrl: string;
+};
+
+const ENVIRONMENT_CONFIG: Record<SupportedEnvironment, EnvironmentConfig> = {
+  QA: appConfiguration,
+};
 
 /**
  * Resolves the active test environment and validates supported values.
@@ -20,3 +29,4 @@ function resolveEnvironment(): SupportedEnvironment {
 }
 
 export const ENV = resolveEnvironment();
+export const environmentConfig = ENVIRONMENT_CONFIG[ENV];

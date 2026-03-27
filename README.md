@@ -22,6 +22,7 @@ playwright-ts-web
 |   |-- environment.ts
 |   `-- environments
 |       `-- qa
+|           |-- app.json
 |           `-- users.json
 |-- fixtures
 |   `-- base.fixture.ts
@@ -48,6 +49,7 @@ playwright-ts-web
 
 ```bash
 npm install
+npx playwright install
 ```
 
 ## Run Tests
@@ -105,6 +107,10 @@ The active environment is resolved through:
 ```bash
 TEST_ENV=QA
 ```
+
+Application-level environment values are stored in:
+
+- `config/environments/qa/app.json`
 
 ## Test Data
 

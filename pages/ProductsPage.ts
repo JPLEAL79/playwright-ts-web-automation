@@ -4,8 +4,6 @@ import { expect, Locator, Page } from '@playwright/test';
  * Page object for the products page.
  */
 export class ProductsPage {
-  private readonly page: Page;
-
   // Locators
   private readonly productsTitle: Locator;
   private readonly addBackpackButton: Locator;
@@ -13,8 +11,6 @@ export class ProductsPage {
   private readonly backpackItem: Locator;
 
   constructor(page: Page) {
-    this.page = page;
-
     this.productsTitle = page.locator('#header_container');
     this.addBackpackButton = page.locator('#add-to-cart-sauce-labs-backpack');
     this.cartButton = page.locator('#shopping_cart_container');
