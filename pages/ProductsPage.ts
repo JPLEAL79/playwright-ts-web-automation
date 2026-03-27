@@ -41,7 +41,7 @@ export class ProductsPage {
   /**
    * Verifies that the backpack item is visible.
    */
-  async isBackpackInCart(): Promise<void> {
+  async validateBackpackInCart(): Promise<void> {
     await expect(this.backpackItem).toBeVisible();
   }
 }

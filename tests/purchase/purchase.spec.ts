@@ -10,6 +10,7 @@ test.describe('Purchase Flow', () => {
     async ({ loggedUser, productsPage, cartPage, checkoutPage }) => {
       await productsPage.addBackpackToCart();
       await productsPage.goToCart();
+      await productsPage.validateBackpackInCart();
       await cartPage.clickCheckout();
 
       await checkoutPage.enterCheckoutInformation(

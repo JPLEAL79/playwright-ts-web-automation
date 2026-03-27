@@ -18,9 +18,7 @@ type AppFixtures = {
  */
 async function loginWithDefaultUser(loginPage: LoginPage): Promise<void> {
   await loginPage.openApplication();
-  await loginPage.enterUsername(resolveUser('USER_OK'));
-  await loginPage.enterPassword(resolveUser('PASS_OK'));
-  await loginPage.clickLogin();
+  await loginPage.login(resolveUser('USER_OK'), resolveUser('PASS_OK'));
 }
 
 export const test = base.extend<AppFixtures>({
