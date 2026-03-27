@@ -1,100 +1,126 @@
-# Playwright TypeScript Automation Framework
+# Playwright TypeScript Web Automation Framework
 
-Automation framework built with **Playwright + TypeScript** for end-to-end testing of an e-commerce web application.
-The project follows clean automation practices using **Page Object Model**, reusable **fixtures**, and **externalized test data**, providing a scalable foundation for integration with CI/CD pipelines and cloud environments such as Docker and AWS.
+End-to-end web automation framework built with Playwright and TypeScript.
 
----
+The project follows a clean and scalable structure based on:
+- Page Object Model
+- reusable fixtures
+- externalized test data
+- environment-based configuration
 
 ## Tech Stack
 
 - Playwright
 - TypeScript
 - Node.js
-- Page Object Model (POM)
-
----
 
 ## Project Structure
 
 ```text
 playwright-ts-web
-│
-├── config
-│   ├── environment.ts
-│   └── environments
-│       └── qa
-│           └── users.json
-│
-├── fixtures
-│   └── base.fixture.ts
-│
-├── pages
-│   ├── LoginPage.ts
-│   ├── ProductsPage.ts
-│   ├── CartPage.ts
-│   └── CheckoutPage.ts
-│
-├── tests
-│   ├── login
-│   │   └── login.spec.ts
-│   └── purchase
-│       └── purchase.spec.ts
-│
-├── test-data
-│   ├── loginData.json
-│   └── purchaseData.json
-│
-├── utils
-│   └── dataResolver.ts
-│
-├── playwright.config.ts
-├── package.json
-└── tsconfig.json
+|-- config
+|   |-- environment.ts
+|   `-- environments
+|       `-- qa
+|           `-- users.json
+|-- fixtures
+|   `-- base.fixture.ts
+|-- pages
+|   |-- CartPage.ts
+|   |-- CheckoutPage.ts
+|   |-- LoginPage.ts
+|   `-- ProductsPage.ts
+|-- test-data
+|   |-- loginData.json
+|   `-- purchaseData.json
+|-- tests
+|   |-- login
+|   |   `-- login.spec.ts
+|   `-- purchase
+|       `-- purchase.spec.ts
+|-- utils
+|   `-- dataResolver.ts
+|-- package.json
+`-- playwright.config.ts
+```
 
-Project Setup:
-1. Create the project
-mkdir playwright-ts-web
-cd playwright-ts-web
-npm init -y
-npm init playwright@latest
+## Setup
 
----
-
-2. Recommended setup during Playwright installation
-✔ Do you want to use TypeScript? → Yes
-✔ Where to put your tests? → tests
-✔ Add GitHub Actions workflow? → No
-✔ Install Playwright browsers? → Yes
-
----
-
-3. Install dependencies:
+```bash
 npm install
+```
 
-Running Tests.
-Run all tests: npx playwright test
-Run tests in headed mode: npx playwright test --headed
-Run login tests only: npx playwright test tests/login
-Run purchase tests only: npx playwright test tests/purchase
+## Run Tests
 
----
+Run the full suite:
 
-Browser Support:
-Run tests in Chrome
-npx playwright test --project=chrome
-Run tests in Firefox
-npx playwright test --project=firefox
-Open HTML report
-npx playwright show-report
+```bash
+npm test
+```
 
----
+Run tests in headed mode:
 
-Test Data:
-Test data is externalized to avoid hardcoded values in tests.
-config/environments/qa/users.json → user credentials
-test-data/loginData.json → login validation messages
-test-data/purchaseData.json → purchase flow data
+```bash
+npm run test:headed
+```
 
-Author:
+Run login tests only:
+
+```bash
+npm run test:login
+```
+
+Run purchase tests only:
+
+```bash
+npm run test:purchase
+```
+
+Run Chrome project:
+
+```bash
+npm run test:chrome
+```
+
+Run Firefox project:
+
+```bash
+npm run test:firefox
+```
+
+Open the Playwright HTML report:
+
+```bash
+npm run report
+```
+
+## Environment Configuration
+
+The framework currently supports:
+
+- `QA`
+
+The active environment is resolved through:
+
+```bash
+TEST_ENV=QA
+```
+
+## Test Data
+
+The framework keeps test data outside the specs to avoid hardcoded values.
+
+- `config/environments/qa/users.json`: environment-specific credentials
+- `test-data/loginData.json`: login validation messages
+- `test-data/purchaseData.json`: purchase flow data
+
+## Current Design Goals
+
+- readable page objects
+- reusable test fixtures
+- clean separation of data and test logic
+- scalable foundation for CI/CD integration
+
+## Author
+
 Juan Pablo Leal
-Senior QA Automation Engineer

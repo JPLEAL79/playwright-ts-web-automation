@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
+    "test:chrome": "playwright test --project=chrome-qa",
+    "test:firefox": "playwright test --project=firefox-qa",
     "test:headed": "playwright test --headed",
+    "test:login": "playwright test tests/login",
+    "test:purchase": "playwright test tests/purchase",
     "test:ui": "playwright test --ui",
     "report": "playwright show-report"
   },

@@ -1,6 +1,4 @@
 {
-  "_comment": "Mensajes de error login",
-
   "ERROR_LOCKED_USER": "Epic sadface: Sorry, this user has been locked out.",
   "ERROR_USERNAME_REQUIRED": "Epic sadface: Username is required"
 }
