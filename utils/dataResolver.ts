@@ -2,86 +2,70 @@ import fs from 'fs';
 import path from 'path';
 import { ENV } from '../config/environment';
 
+type DataMap = Record<string, string>;
+
 /**
- * Carga de datos una sola vez para evitar lecturas repetidas de archivos
+ * Reads and parses a JSON file once at module load time.
+ * This keeps test execution simple and avoids repeated disk reads.
  */
+function loadJsonFile(relativePathSegments: string[]): DataMap {
+  const filePath = path.join(__dirname, '..', ...relativePathSegments);
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
 
-const usersData = JSON.parse(
-  fs.readFileSync(
-    path.join(
-      __dirname,
-      '..',
-      'config',
-      'environments',
-      ENV.toLowerCase(),
-      'users.json'
-    ),
-    'utf-8'
-  )
-);
-
-const loginData = JSON.parse(
-  fs.readFileSync(
-    path.join(
-      __dirname,
-      '..',
-      'test-data',
-      'loginData.json'
-    ),
-    'utf-8'
-  )
-);
-
-const purchaseData = JSON.parse(
-  fs.readFileSync(
-    path.join(
-      __dirname,
-      '..',
-      'test-data',
-      'purchaseData.json'
-    ),
-    'utf-8'
-  )
-);
+  return JSON.parse(fileContent) as DataMap;
+}
 
 /**
- * Resolver de usuarios
+ * Resolves a required key from a data source and fails fast with context.
+ */
+function resolveRequiredValue(
+  source: DataMap,
+  key: string,
+  sourceName: string
+): string {
+  const value = source[key];
+
+  if (!value) {
+    throw new Error(`Missing key "${key}" in ${sourceName}.`);
+  }
+
+  return value;
+}
+
+const usersData = loadJsonFile([
+  'config',
+  'environments',
+  ENV.toLowerCase(),
+  'users.json',
+]);
+
+const loginData = loadJsonFile([
+  'test-data',
+  'loginData.json',
+]);
+
+const purchaseData = loadJsonFile([
+  'test-data',
+  'purchaseData.json',
+]);
+
+/**
+ * Resolves environment-specific user credentials.
  */
 export function resolveUser(key: string): string {
-  const value = usersData[key];
-
-  if (!value) {
-    throw new Error('Missing key in users.json: ${key}');
-  }
-
-  return value;
-
+  return resolveRequiredValue(usersData, key, 'users.json');
 }
 
 /**
- * Resolver de datos de login
+ * Resolves login-related test data.
  */
 export function resolveLoginData(key: string): string {
-  const value = loginData[key];
-
-  if (!value) {
-    throw new Error('Missing key in loginData.json: ${key}');
-  }
-
-  return value;
-
+  return resolveRequiredValue(loginData, key, 'loginData.json');
 }
 
 /**
- * Resolver de datos de compra
+ * Resolves purchase-related test data.
  */
 export function resolvePurchaseData(key: string): string {
-  const value = purchaseData[key];
-
-  if (!value) {
-    throw new Error('Missing key in purchaseData.json: ${key}');
-  }
-
-  return value;
-
+  return resolveRequiredValue(purchaseData, key, 'purchaseData.json');
 }

@@ -1,22 +1,29 @@
-import { test as base } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-import { ProductsPage } from '../pages/ProductsPage';
+import { expect, test as base } from '@playwright/test';
 import { CartPage } from '../pages/CartPage';
 import { CheckoutPage } from '../pages/CheckoutPage';
+import { LoginPage } from '../pages/LoginPage';
+import { ProductsPage } from '../pages/ProductsPage';
 import { resolveUser } from '../utils/dataResolver';
 
-type Pages = {
+type AppFixtures = {
   loginPage: LoginPage;
   productsPage: ProductsPage;
   cartPage: CartPage;
   checkoutPage: CheckoutPage;
-
-  // fixture que representa un usuario autenticado
   loggedUser: void;
 };
 
-export const test = base.extend<Pages>({
+/**
+ * Performs the default login flow used by authenticated tests.
+ */
+async function loginWithDefaultUser(loginPage: LoginPage): Promise<void> {
+  await loginPage.openApplication();
+  await loginPage.enterUsername(resolveUser('USER_OK'));
+  await loginPage.enterPassword(resolveUser('PASS_OK'));
+  await loginPage.clickLogin();
+}
 
+export const test = base.extend<AppFixtures>({
   loginPage: async ({ page }, use) => {
     await use(new LoginPage(page));
   },
@@ -34,17 +41,13 @@ export const test = base.extend<Pages>({
   },
 
   /**
-   * Fixture que ejecuta login automático
-   * Similar al Background de Cucumber
+   * Provides an authenticated session for tests that require a logged user.
+   * This plays a similar role to a reusable Cucumber Background setup.
    */
   loggedUser: async ({ loginPage }, use) => {
-
-    await loginPage.openApplication();
-    await loginPage.enterUsername(resolveUser('USER_OK'));
-    await loginPage.enterPassword(resolveUser('PASS_OK'));
-    await loginPage.clickLogin();
+    await loginWithDefaultUser(loginPage);
     await use();
-
-  }
-
+  },
 });
+
+export { expect };

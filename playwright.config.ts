@@ -1,114 +1,66 @@
 import { defineConfig, devices } from '@playwright/test';
+import { ENV } from './config/environment';
 
-/**
- * Playwright configuration
- * https://playwright.dev/docs/test-configuration
- */
+const isCI = Boolean(process.env.CI);
+const defaultBaseUrl = 'https://www.saucedemo.com/v1/index.html';
+
 export default defineConfig({
-
-  /* Directorio donde se encuentran los tests */
+  // Test source directory
   testDir: './tests',
 
-  /* Permite ejecutar archivos de test en paralelo */
+  // Allows files to run in parallel when the suite supports it
   fullyParallel: true,
 
-  /* Evita subir accidentalmente test.only a CI */
-  forbidOnly: !!process.env.CI,
+  // Prevents accidental test.only usage in CI
+  forbidOnly: isCI,
 
-  /**
-   * Retry de tests
-   * Si un test falla se vuelve a ejecutar una vez.
-   */
+  // Retries failed tests once to reduce flaky reruns noise
   retries: 1,
 
-  /**
-   * Control de paralelismo
-   * En CI se ejecuta 1 worker para estabilidad.
-   * En local se limitan los workers para evitar saturar la máquina.
-   */
-  workers: process.env.CI ? 1 : 2,
+  // Keeps CI execution stable and local execution lightweight
+  workers: isCI ? 1 : 2,
 
-  /* Reporte HTML local generado por Playwright */
-  reporter: 'html',
+  // HTML report for local review, plus list output in CI logs
+  reporter: isCI
+    ? [['list'], ['html', { open: 'never' }]]
+    : [['html', { open: 'never' }]],
 
   use: {
+    // Base URL can later be resolved by environment-specific config
+    baseURL: defaultBaseUrl,
 
-    /**
-     * URL base de la aplicación
-     */
-    baseURL: 'https://www.saucedemo.com/v1/index.html',
-
-    /**
-     * Resolución estándar enterprise
-     */
+    // Standard desktop viewport
     viewport: { width: 1920, height: 1080 },
 
-    /**
-     * Trace de ejecución
-     */
+    // Collect trace only when a retry happens
     trace: 'on-first-retry',
 
-    /**
-     * Captura screenshot cuando falla
-     */
+    // Capture screenshots only on failures
     screenshot: 'only-on-failure',
 
-    /**
-     * Video cuando falla
-     */
+    // Keep failure videos for debugging
     video: 'retain-on-failure',
 
-    /**
-     * Permisos del navegador
-     */
+    // No browser permissions are required for this application
     permissions: [],
 
-    /**
-     * Modo headless por defecto
-     */
-    headless: true
-
+    // Headless by default for predictable execution
+    headless: true,
   },
 
-  /**
-   * Navegadores soportados
-   */
   projects: [
-
     {
-      name: 'chrome',
+      name: `chrome-${ENV.toLowerCase()}`,
       use: {
         ...devices['Desktop Chrome'],
-        channel: 'chrome'
+        channel: 'chrome',
       },
     },
-
-    /**
-     * Firefox
-     */
     {
-      name: 'firefox',
+      name: `firefox-${ENV.toLowerCase()}`,
       use: {
-        ...devices['Desktop Firefox']
+        ...devices['Desktop Firefox'],
       },
     },
-
-    /*
-    Chromium
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    */
-
-    /*
-    Webkit / Safari
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    */
-
   ],
-
 });
