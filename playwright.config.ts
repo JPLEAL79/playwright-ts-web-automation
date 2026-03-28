@@ -1,8 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
-import { ENV } from './config/environment';
+import { ENV, environmentConfig } from './config/environment';
 
 const isCI = Boolean(process.env.CI);
-const defaultBaseUrl = 'https://www.saucedemo.com/v1/index.html';
 
 export default defineConfig({
   // Test source directory
@@ -26,8 +25,8 @@ export default defineConfig({
     : [['html', { open: 'never' }]],
 
   use: {
-    // Base URL can later be resolved by environment-specific config
-    baseURL: defaultBaseUrl,
+    // Base URL is resolved from the selected environment configuration
+    baseURL: environmentConfig.baseUrl,
 
     // Standard desktop viewport
     viewport: { width: 1920, height: 1080 },
@@ -50,14 +49,14 @@ export default defineConfig({
 
   projects: [
     {
-      name: `chrome-${ENV.toLowerCase()}`,
+      name: 'chrome',
       use: {
         ...devices['Desktop Chrome'],
         channel: 'chrome',
       },
     },
     {
-      name: `firefox-${ENV.toLowerCase()}`,
+      name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
       },

@@ -1,28 +1,29 @@
-import { Page, Locator } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 
 /**
- * Page Object de la página del carrito
+ * Page object for the cart page.
  */
 export class CartPage {
-
-  private page: Page;
-
-  /* Locators */
-
-  private checkoutButton: Locator;
+  // Locators
+  private readonly checkoutButton: Locator;
+  private readonly backpackItem: Locator;
 
   constructor(page: Page) {
-    this.page = page;
     this.checkoutButton = page.locator('#checkout');
-
+    this.backpackItem = page.locator('text=Sauce Labs Backpack');
   }
 
   /**
-   * Avanza al proceso de checkout
+   * Proceeds to the checkout flow.
    */
-  async clickCheckout() {
+  async clickCheckout(): Promise<void> {
     await this.checkoutButton.click();
-
   }
 
+  /**
+   * Verifies that the backpack item is visible in the cart.
+   */
+  async validateBackpackInCart(): Promise<void> {
+    await expect(this.backpackItem).toBeVisible();
+  }
 }

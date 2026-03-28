@@ -1,16 +1,13 @@
-import { Page, Locator, expect } from '@playwright/test';
-
+import { expect, Locator, Page } from '@playwright/test';
 
 export class LoginPage {
+  private readonly page: Page;
 
-  private page: Page;
-
-  /* Locators */
-
-  private usernameInput: Locator;
-  private passwordInput: Locator;
-  private loginButton: Locator;
-  private errorMessage: Locator;
+  // Locators
+  private readonly usernameInput: Locator;
+  private readonly passwordInput: Locator;
+  private readonly loginButton: Locator;
+  private readonly errorMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -22,38 +19,46 @@ export class LoginPage {
   }
 
   /**
-   * Abre la aplicación
+   * Opens the application entry page.
    */
-  async openApplication() {
+  async openApplication(): Promise<void> {
     await this.page.goto('/');
   }
 
   /**
-   * Ingresa username
+   * Fills the username field.
    */
-  async enterUsername(username: string) {
+  async enterUsername(username: string): Promise<void> {
     await this.usernameInput.fill(username);
   }
 
   /**
-   * Ingresa password
+   * Fills the password field.
    */
-  async enterPassword(password: string) {
+  async enterPassword(password: string): Promise<void> {
     await this.passwordInput.fill(password);
   }
 
   /**
-   * Click botón login
+   * Clicks the login button.
    */
-  async clickLogin() {
+  async clickLogin(): Promise<void> {
     await this.loginButton.click();
   }
 
   /**
-   * Validar mensaje de error
+   * Performs the complete login action.
    */
-  async validateErrorMessage(expectedMessage: string) {
-    await expect(this.errorMessage).toHaveText(expectedMessage);
+  async login(username: string, password: string): Promise<void> {
+    await this.enterUsername(username);
+    await this.enterPassword(password);
+    await this.clickLogin();
   }
 
+  /**
+   * Verifies the displayed login error message.
+   */
+  async validateErrorMessage(expectedMessage: string): Promise<void> {
+    await expect(this.errorMessage).toHaveText(expectedMessage);
+  }
 }

@@ -1,79 +1,78 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 
 /**
- * Page Object de la página de checkout
+ * Page object for the checkout page.
  */
 export class CheckoutPage {
-
-  private page: Page;
-
-  /* Locators */
-
-  private firstNameInput: Locator;
-  private lastNameInput: Locator;
-  private postalCodeInput: Locator;
-  private continueButton: Locator;
-  private finishButton: Locator;
-  private confirmationMessage: Locator;
+  // Locators
+  private readonly firstNameInput: Locator;
+  private readonly lastNameInput: Locator;
+  private readonly postalCodeInput: Locator;
+  private readonly continueButton: Locator;
+  private readonly finishButton: Locator;
+  private readonly confirmationMessage: Locator;
 
   constructor(page: Page) {
-    this.page = page;
-
     this.firstNameInput = page.locator('#first-name');
     this.lastNameInput = page.locator('#last-name');
     this.postalCodeInput = page.locator('#postal-code');
     this.continueButton = page.locator('#continue');
     this.finishButton = page.locator('#finish');
     this.confirmationMessage = page.locator('.complete-header');
-
   }
 
   /**
-   * Ingresa nombre del cliente
+   * Fills the customer first name.
    */
-  async enterFirstName(firstName: string) {
+  async enterFirstName(firstName: string): Promise<void> {
     await this.firstNameInput.fill(firstName);
-
   }
 
   /**
-   * Ingresa apellido del cliente
+   * Fills the customer last name.
    */
-  async enterLastName(lastName: string) {
+  async enterLastName(lastName: string): Promise<void> {
     await this.lastNameInput.fill(lastName);
-
   }
 
   /**
-   * Ingresa código postal
+   * Fills the customer postal code.
    */
-  async enterPostalCode(postalCode: string) {
+  async enterPostalCode(postalCode: string): Promise<void> {
     await this.postalCodeInput.fill(postalCode);
-
   }
 
   /**
-   * Continúa el proceso de checkout
+   * Completes the customer information form.
    */
-  async continueCheckout() {
+  async enterCheckoutInformation(
+    firstName: string,
+    lastName: string,
+    postalCode: string
+  ): Promise<void> {
+    await this.enterFirstName(firstName);
+    await this.enterLastName(lastName);
+    await this.enterPostalCode(postalCode);
+  }
+
+  /**
+   * Continues the checkout flow.
+   */
+  async continueCheckout(): Promise<void> {
     await this.continueButton.click();
-
   }
 
   /**
-   * Finaliza la compra
+   * Finishes the purchase flow.
    */
-  async finishCheckout() {
+  async finishCheckout(): Promise<void> {
     await this.finishButton.click();
-
   }
 
   /**
-   * Valida confirmación de compra
+   * Verifies that the purchase confirmation is displayed.
    */
-  async validatePurchaseConfirmation() {
+  async validatePurchaseConfirmation(): Promise<void> {
     await expect(this.confirmationMessage).toBeVisible();
-
   }
-
 }
