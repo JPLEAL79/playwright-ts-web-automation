@@ -42,8 +42,9 @@ export const test = base.extend<AppFixtures>({
    * Provides an authenticated session for tests that require a logged user.
    * This plays a similar role to a reusable Cucumber Background setup.
    */
-  loggedUser: async ({ loginPage }, use) => {
+  loggedUser: async ({ loginPage, productsPage }, use) => {
     await loginWithDefaultUser(loginPage);
+    await productsPage.validateUserIsLoggedIn();
     await use();
   },
 });

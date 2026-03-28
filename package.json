@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "test:chrome": "playwright test --project=chrome-qa",
-    "test:firefox": "playwright test --project=firefox-qa",
+    "test:chrome": "playwright test --project=chrome",
+    "test:firefox": "playwright test --project=firefox",
     "test:headed": "playwright test --headed",
     "test:login": "playwright test tests/login",
     "test:purchase": "playwright test tests/purchase",

@@ -49,14 +49,14 @@ export default defineConfig({
 
   projects: [
     {
-      name: `chrome-${ENV.toLowerCase()}`,
+      name: 'chrome',
       use: {
         ...devices['Desktop Chrome'],
         channel: 'chrome',
       },
     },
     {
-      name: `firefox-${ENV.toLowerCase()}`,
+      name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
       },

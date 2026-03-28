@@ -120,6 +120,14 @@ The framework keeps test data outside the specs to avoid hardcoded values.
 - `test-data/loginData.json`: login validation messages
 - `test-data/purchaseData.json`: purchase flow data
 
+Credential values can also be injected through environment variables:
+
+- `USER_OK`
+- `USER_LOCKED`
+- `PASS_OK`
+
+Environment variables take precedence over repository values. This keeps the framework ready for secure secret management in enterprise pipelines.
+
 ## Current Design Goals
 
 - readable page objects

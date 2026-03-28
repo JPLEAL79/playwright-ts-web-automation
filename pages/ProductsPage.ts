@@ -8,13 +8,11 @@ export class ProductsPage {
   private readonly productsTitle: Locator;
   private readonly addBackpackButton: Locator;
   private readonly cartButton: Locator;
-  private readonly backpackItem: Locator;
 
   constructor(page: Page) {
     this.productsTitle = page.locator('#header_container');
     this.addBackpackButton = page.locator('#add-to-cart-sauce-labs-backpack');
     this.cartButton = page.locator('#shopping_cart_container');
-    this.backpackItem = page.locator('text=Sauce Labs Backpack');
   }
 
   /**
@@ -36,12 +34,5 @@ export class ProductsPage {
    */
   async goToCart(): Promise<void> {
     await this.cartButton.click();
-  }
-
-  /**
-   * Verifies that the backpack item is visible.
-   */
-  async validateBackpackInCart(): Promise<void> {
-    await expect(this.backpackItem).toBeVisible();
   }
 }
