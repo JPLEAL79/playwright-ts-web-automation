@@ -12,13 +12,7 @@ test.describe('Purchase Flow', () => {
       await productsPage.goToCart();
       await cartPage.validateBackpackInCart();
       await cartPage.clickCheckout();
-
-      await checkoutPage.enterCheckoutInformation(
-        resolvePurchaseData('FIRST_NAME'),
-        resolvePurchaseData('LAST_NAME'),
-        resolvePurchaseData('POSTAL_CODE')
-      );
-
+      await checkoutPage.enterCheckoutInformation(resolvePurchaseData('FIRST_NAME'), resolvePurchaseData('LAST_NAME'), resolvePurchaseData('POSTAL_CODE'));
       await checkoutPage.continueCheckout();
       await checkoutPage.finishCheckout();
       await checkoutPage.validatePurchaseConfirmation();
