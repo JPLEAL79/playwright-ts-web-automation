@@ -9,6 +9,9 @@ export class ProductsPage {
   private readonly addBackpackButton: Locator;
   private readonly cartButton: Locator;
 
+  /**
+   * Receives the Playwright page used to build the locators for this screen.
+   */
   constructor(page: Page) {
     this.productsTitle = page.locator('#header_container');
     this.addBackpackButton = page.locator('#add-to-cart-sauce-labs-backpack');

@@ -12,6 +12,9 @@ export class CheckoutPage {
   private readonly finishButton: Locator;
   private readonly confirmationMessage: Locator;
 
+  /**
+   * Receives the Playwright page used to build the locators for this screen.
+   */
   constructor(page: Page) {
     this.firstNameInput = page.locator('#first-name');
     this.lastNameInput = page.locator('#last-name');

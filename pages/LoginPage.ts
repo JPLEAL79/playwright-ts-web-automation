@@ -1,5 +1,8 @@
 import { expect, Locator, Page } from '@playwright/test';
 
+/**
+ * Page object for the login page.
+ */
 export class LoginPage {
   private readonly page: Page;
 
@@ -9,6 +12,9 @@ export class LoginPage {
   private readonly loginButton: Locator;
   private readonly errorMessage: Locator;
 
+  /**
+   * Receives the Playwright page used to interact with the browser.
+   */
   constructor(page: Page) {
     this.page = page;
 
@@ -20,6 +26,7 @@ export class LoginPage {
 
   /**
    * Opens the application entry page.
+   * The "/" route is resolved against the baseURL from Playwright config.
    */
   async openApplication(): Promise<void> {
     await this.page.goto('/');
