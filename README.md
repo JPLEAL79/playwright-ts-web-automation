@@ -52,6 +52,12 @@ npm install
 npx playwright install
 ```
 
+Create a local environment file before running the suite:
+
+```bash
+cp .env.example .env
+```
+
 ## Run Tests
 
 Run the full suite:
@@ -108,6 +114,16 @@ The active environment is resolved through:
 TEST_ENV=QA
 ```
 
+Environment files are loaded in this order:
+
+- `.env`
+- `.env.local`
+- `.env.<test_env>`
+- `.env.<test_env>.local`
+
+Values loaded later override earlier ones, which keeps the setup friendly for
+local development, CI variables, and future secret-manager integrations.
+
 Application-level environment values are stored in:
 
 - `config/environments/qa/app.json`
@@ -120,13 +136,17 @@ The framework keeps test data outside the specs to avoid hardcoded values.
 - `test-data/loginData.json`: login validation messages
 - `test-data/purchaseData.json`: purchase flow data
 
-Credential values can also be injected through environment variables:
+Credential values should be injected through environment variables or `.env`
+files:
 
 - `USER_OK`
 - `USER_LOCKED`
 - `PASS_OK`
 
-Environment variables take precedence over repository values. This keeps the framework ready for secure secret management in enterprise pipelines.
+Environment variables take precedence over repository values. The tracked
+`users.json` file remains as a fallback for non-sensitive sample data, while the
+runtime is ready for CI/CD secret injection and a future external secret
+manager.
 
 ## Current Design Goals
 

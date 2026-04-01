@@ -1,4 +1,7 @@
 import appConfiguration from './environments/qa/app.json';
+import { loadEnvironmentVariables } from './loadEnvironment';
+
+loadEnvironmentVariables();
 
 const SUPPORTED_ENVIRONMENTS = ['QA'] as const;
 

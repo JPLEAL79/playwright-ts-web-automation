@@ -32,6 +32,15 @@ function resolveRequiredValue(
   return value;
 }
 
+/**
+ * Resolves a non-empty environment variable when it exists.
+ */
+function resolveEnvironmentValue(key: string): string | undefined {
+  const value = process.env[key]?.trim();
+
+  return value ? value : undefined;
+}
+
 const usersData = loadJsonFile([
   'config',
   'environments',
@@ -53,13 +62,17 @@ const purchaseData = loadJsonFile([
  * Resolves environment-specific user credentials.
  */
 export function resolveUser(key: string): string {
-  const environmentValue = process.env[key]?.trim();
+  const environmentValue = resolveEnvironmentValue(key);
 
   if (environmentValue) {
     return environmentValue;
   }
 
-  return resolveRequiredValue(usersData, key, 'users.json');
+  return resolveRequiredValue(
+    usersData,
+    key,
+    `config/environments/${ENV.toLowerCase()}/users.json or environment variables`
+  );
 }
 
 /**
