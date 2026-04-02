@@ -20,7 +20,7 @@ type AppFixtures = {
 /**
  * Performs the default login flow used by authenticated tests.
  */
-async function loginWithDefaultUser(loginPage: LoginPage): Promise<void> {
+async function authenticateDefaultUser(loginPage: LoginPage): Promise<void> {
   await loginPage.openApplication();
   await loginPage.login(resolveUser('USER_OK'), resolveUser('PASS_OK'));
 }
@@ -67,8 +67,8 @@ export const test = base.extend<AppFixtures>({
    * This plays a similar role to a reusable Cucumber Background setup.
    */
   loggedUser: async ({ loginPage, productsPage }, use) => {
-    await loginWithDefaultUser(loginPage);
-    await productsPage.validateUserIsLoggedIn();
+    await authenticateDefaultUser(loginPage);
+    await productsPage.assertUserIsLoggedIn();
     await use();
   },
 });

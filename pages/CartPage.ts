@@ -24,9 +24,9 @@ export class CartPage {
   }
 
   /**
-   * Verifies that the backpack item is visible in the cart.
+   * Asserts that the backpack item is visible in the cart.
    */
-  async validateBackpackInCart(): Promise<void> {
+  async assertBackpackInCart(): Promise<void> {
     await expect(this.backpackItem).toBeVisible();
   }
 }

@@ -19,13 +19,6 @@ export class ProductsPage {
   }
 
   /**
-   * Verifies that the user is successfully logged in.
-   */
-  async validateUserIsLoggedIn(): Promise<void> {
-    await expect(this.productsTitle).toBeVisible();
-  }
-
-  /**
    * Adds the backpack product to the cart.
    */
   async addBackpackToCart(): Promise<void> {
@@ -37,5 +30,12 @@ export class ProductsPage {
    */
   async goToCart(): Promise<void> {
     await this.cartButton.click();
+  }
+
+  /**
+   * Asserts that the user is successfully logged in.
+   */
+  async assertUserIsLoggedIn(): Promise<void> {
+    await expect(this.productsTitle).toBeVisible();
   }
 }

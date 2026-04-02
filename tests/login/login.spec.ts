@@ -17,7 +17,7 @@ test.describe('Authentication - Login Flow', () => {
    */
   test('Login - valid credentials', async ({ loginPage, productsPage }) => {
     await loginPage.login(resolveUser('USER_OK'), resolveUser('PASS_OK'));
-    await productsPage.validateUserIsLoggedIn();
+    await productsPage.assertUserIsLoggedIn();
   });
 
   /**
@@ -25,14 +25,14 @@ test.describe('Authentication - Login Flow', () => {
    */
   test('Login - locked user', async ({ loginPage }) => {
     await loginPage.login(resolveUser('USER_LOCKED'), resolveUser('PASS_OK'));
-    await loginPage.validateErrorMessage(resolveLoginData('ERROR_LOCKED_USER'));
+    await loginPage.assertErrorMessage(resolveLoginData('ERROR_LOCKED_USER'));
   });
 
   /**
    * Verifies the behavior when no credentials are provided.
    */
   test('Login - empty username and password', async ({ loginPage }) => {
-    await loginPage.clickLogin();
-    await loginPage.validateErrorMessage(resolveLoginData('ERROR_USERNAME_REQUIRED'));
+    await loginPage.submitLoginWithoutCredentials();
+    await loginPage.assertErrorMessage(resolveLoginData('ERROR_USERNAME_REQUIRED'));
   });
 });
