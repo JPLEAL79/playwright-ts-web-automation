@@ -5,23 +5,28 @@ import { resolvePurchaseData } from '../../utils/dataResolver';
  * Test suite for the purchase flow.
  */
 test.describe('Purchase Flow', () => {
-  test(
-    'User completes purchase successfully',
-    async ({ loggedUser, productsPage, cartPage, checkoutPage }) => {
-      await productsPage.addBackpackToCart();
-      await productsPage.goToCart();
-      await cartPage.validateBackpackInCart();
-      await cartPage.clickCheckout();
+  /**
+   * Verifies that an authenticated user can complete a purchase successfully.
+   */
+  test('User completes purchase successfully', async ({ loggedUser, productsPage, cartPage, checkoutPage }) => {
+    // Add product and open cart.
+    await productsPage.addBackpackToCart();
+    await productsPage.goToCart();
 
-      await checkoutPage.enterCheckoutInformation(
-        resolvePurchaseData('FIRST_NAME'),
-        resolvePurchaseData('LAST_NAME'),
-        resolvePurchaseData('POSTAL_CODE')
-      );
+    // Review cart and start checkout.
+    await cartPage.assertBackpackInCart();
+    await cartPage.clickCheckout();
 
-      await checkoutPage.continueCheckout();
-      await checkoutPage.finishCheckout();
-      await checkoutPage.validatePurchaseConfirmation();
-    }
-  );
+    // Complete checkout information.
+    await checkoutPage.enterCheckoutInformation(
+      resolvePurchaseData('FIRST_NAME'),
+      resolvePurchaseData('LAST_NAME'),
+      resolvePurchaseData('POSTAL_CODE')
+    );
+
+    // Finish purchase and verify confirmation.
+    await checkoutPage.continueCheckout();
+    await checkoutPage.finishCheckout();
+    await checkoutPage.assertPurchaseConfirmation();
+  });
 });

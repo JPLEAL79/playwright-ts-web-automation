@@ -33,11 +33,12 @@ function resolveRequiredValue(
 }
 
 /**
- * Resolves a key from environment variables first and falls back to file data.
- * This allows secure credential injection in CI/CD pipelines.
+ * Resolves a non-empty environment variable when it exists.
  */
-function resolveEnvironmentOverride(key: string): string | undefined {
-  return process.env[key]?.trim() || undefined;
+function resolveEnvironmentValue(key: string): string | undefined {
+  const value = process.env[key]?.trim();
+
+  return value ? value : undefined;
 }
 
 const usersData = loadJsonFile([
@@ -61,9 +62,16 @@ const purchaseData = loadJsonFile([
  * Resolves environment-specific user credentials.
  */
 export function resolveUser(key: string): string {
-  return (
-    resolveEnvironmentOverride(key) ||
-    resolveRequiredValue(usersData, key, 'users.json')
+  const environmentValue = resolveEnvironmentValue(key);
+
+  if (environmentValue) {
+    return environmentValue;
+  }
+
+  return resolveRequiredValue(
+    usersData,
+    key,
+    `config/environments/${ENV.toLowerCase()}/users.json or environment variables`
   );
 }
 

@@ -12,6 +12,9 @@ export class CheckoutPage {
   private readonly finishButton: Locator;
   private readonly confirmationMessage: Locator;
 
+  /**
+   * Receives the Playwright page used to build the locators for this screen.
+   */
   constructor(page: Page) {
     this.firstNameInput = page.locator('#first-name');
     this.lastNameInput = page.locator('#last-name');
@@ -22,27 +25,6 @@ export class CheckoutPage {
   }
 
   /**
-   * Fills the customer first name.
-   */
-  async enterFirstName(firstName: string): Promise<void> {
-    await this.firstNameInput.fill(firstName);
-  }
-
-  /**
-   * Fills the customer last name.
-   */
-  async enterLastName(lastName: string): Promise<void> {
-    await this.lastNameInput.fill(lastName);
-  }
-
-  /**
-   * Fills the customer postal code.
-   */
-  async enterPostalCode(postalCode: string): Promise<void> {
-    await this.postalCodeInput.fill(postalCode);
-  }
-
-  /**
    * Completes the customer information form.
    */
   async enterCheckoutInformation(
@@ -50,9 +32,9 @@ export class CheckoutPage {
     lastName: string,
     postalCode: string
   ): Promise<void> {
-    await this.enterFirstName(firstName);
-    await this.enterLastName(lastName);
-    await this.enterPostalCode(postalCode);
+    await this.firstNameInput.fill(firstName);
+    await this.lastNameInput.fill(lastName);
+    await this.postalCodeInput.fill(postalCode);
   }
 
   /**
@@ -70,9 +52,9 @@ export class CheckoutPage {
   }
 
   /**
-   * Verifies that the purchase confirmation is displayed.
+   * Asserts that the purchase confirmation is displayed.
    */
-  async validatePurchaseConfirmation(): Promise<void> {
+  async assertPurchaseConfirmation(): Promise<void> {
     await expect(this.confirmationMessage).toBeVisible();
   }
 }

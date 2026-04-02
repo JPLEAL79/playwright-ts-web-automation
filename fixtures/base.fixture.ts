@@ -5,6 +5,10 @@ import { LoginPage } from '../pages/LoginPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { resolveUser } from '../utils/dataResolver';
 
+/**
+ * Custom fixtures exposed to the test files.
+ * Each property becomes available in tests through dependency injection.
+ */
 type AppFixtures = {
   loginPage: LoginPage;
   productsPage: ProductsPage;
@@ -16,26 +20,46 @@ type AppFixtures = {
 /**
  * Performs the default login flow used by authenticated tests.
  */
-async function loginWithDefaultUser(loginPage: LoginPage): Promise<void> {
+async function authenticateDefaultUser(loginPage: LoginPage): Promise<void> {
   await loginPage.openApplication();
   await loginPage.login(resolveUser('USER_OK'), resolveUser('PASS_OK'));
 }
 
+/**
+ * Extends Playwright's base test with reusable application fixtures.
+ * This plays a similar role to a shared BaseTest, but through composition.
+ */
 export const test = base.extend<AppFixtures>({
+  /**
+   * Provides the login page object to any test that requests it.
+   */
   loginPage: async ({ page }, use) => {
-    await use(new LoginPage(page));
+    const loginPage = new LoginPage(page);
+    await use(loginPage);
   },
 
+  /**
+   * Provides the products page object to any test that requests it.
+   */
   productsPage: async ({ page }, use) => {
-    await use(new ProductsPage(page));
+    const productsPage = new ProductsPage(page);
+    await use(productsPage);
   },
 
+  /**
+   * Provides the cart page object to any test that requests it.
+   */
   cartPage: async ({ page }, use) => {
-    await use(new CartPage(page));
+    const cartPage = new CartPage(page);
+    await use(cartPage);
   },
 
+  /**
+   * Provides the checkout page object to any test that requests it.
+   */
   checkoutPage: async ({ page }, use) => {
-    await use(new CheckoutPage(page));
+    const checkoutPage = new CheckoutPage(page);
+    await use(checkoutPage);
   },
 
   /**
@@ -43,8 +67,8 @@ export const test = base.extend<AppFixtures>({
    * This plays a similar role to a reusable Cucumber Background setup.
    */
   loggedUser: async ({ loginPage, productsPage }, use) => {
-    await loginWithDefaultUser(loginPage);
-    await productsPage.validateUserIsLoggedIn();
+    await authenticateDefaultUser(loginPage);
+    await productsPage.assertUserIsLoggedIn();
     await use();
   },
 });

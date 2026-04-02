@@ -1,5 +1,8 @@
 import { expect, Locator, Page } from '@playwright/test';
 
+/**
+ * Page object for the login page.
+ */
 export class LoginPage {
   private readonly page: Page;
 
@@ -9,6 +12,9 @@ export class LoginPage {
   private readonly loginButton: Locator;
   private readonly errorMessage: Locator;
 
+  /**
+   * Receives the Playwright page used to interact with the browser.
+   */
   constructor(page: Page) {
     this.page = page;
 
@@ -20,45 +26,32 @@ export class LoginPage {
 
   /**
    * Opens the application entry page.
+   * The "/" route is resolved against the baseURL from Playwright config.
    */
   async openApplication(): Promise<void> {
     await this.page.goto('/');
   }
 
   /**
-   * Fills the username field.
+   * Performs the complete login action.
    */
-  async enterUsername(username: string): Promise<void> {
+  async login(username: string, password: string): Promise<void> {
     await this.usernameInput.fill(username);
-  }
-
-  /**
-   * Fills the password field.
-   */
-  async enterPassword(password: string): Promise<void> {
     await this.passwordInput.fill(password);
-  }
-
-  /**
-   * Clicks the login button.
-   */
-  async clickLogin(): Promise<void> {
     await this.loginButton.click();
   }
 
   /**
-   * Performs the complete login action.
+   * Clicks the login button without filling credentials.
    */
-  async login(username: string, password: string): Promise<void> {
-    await this.enterUsername(username);
-    await this.enterPassword(password);
-    await this.clickLogin();
+  async submitLoginWithoutCredentials(): Promise<void> {
+    await this.loginButton.click();
   }
 
   /**
-   * Verifies the displayed login error message.
+   * Asserts the displayed login error message.
    */
-  async validateErrorMessage(expectedMessage: string): Promise<void> {
+  async assertErrorMessage(expectedMessage: string): Promise<void> {
     await expect(this.errorMessage).toHaveText(expectedMessage);
   }
 }
